@@ -1,0 +1,12 @@
+name = "twitch-relay"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+# Add RELAY_SECRET using: wrangler secret put RELAY_SECRET
+# Placement does not guarantee a particular Twitch region or 1440p availability.
+
+[[ratelimits]]
+name = "RELAY_RATE_LIMITER"
+namespace_id = "20112026"
+[ratelimits.simple]
+limit = 120
+period = 60

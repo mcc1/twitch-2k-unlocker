@@ -2,7 +2,6 @@
    Twitch 2K Quality Unlocker — Popup Styles
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 * {
   margin: 0;
@@ -191,4 +190,10 @@ input[type="url"]:focus {
   font-size: 11px;
   color: #adadb8;
   line-height: 1.5;
-}
+}body { width: 340px; }
+input[type="password"] { width: 100%; padding: 8px 10px; border: 1px solid #636370; border-radius: 6px; background: #25252b; color: #efeff1; }
+input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid #bf94ff; outline-offset: 3px; }
+button { padding: 9px; border: 0; border-radius: 6px; color: white; background: #7040b0; cursor: pointer; }
+button:disabled { opacity: 0.6; cursor: wait; }
+label { font-size: 13px; line-height: 1.5; }
+.hint { color: #adadb8; }

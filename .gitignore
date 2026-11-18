@@ -8,3 +8,9 @@ node_modules/
 # OS
 Thumbs.db
 .DS_Store
+
+# Local secrets / tooling
+.dev.vars
+.env
+.env.*
+.wrangler/

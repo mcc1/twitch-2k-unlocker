@@ -1,21 +1,24 @@
-// ============================================================
-// Twitch 2K Quality Unlocker — Content Script (injector)
-// ============================================================
-// Injects the page-level fetch interceptor into Twitch pages.
-// Content scripts can't directly override window.fetch, so we
-// inject a <script> tag that runs in the page's JS context.
-// ============================================================
-
+// The page bridge carries only metadata requests, never the relay URL or key.
 (async function () {
-    // Get current state from background
-    const state = await chrome.runtime.sendMessage({ action: "getStatus" });
-    if (!state.enabled) return;
-
-    // Inject the page script with the proxy URL
-    // Cache-bust with timestamp to avoid stale cached versions
-    const script = document.createElement("script");
-    script.src = chrome.runtime.getURL("page.js") + "?v=" + Date.now();
-    script.dataset.proxyUrl = state.proxyUrl || "";
-    (document.head || document.documentElement).appendChild(script);
-    script.onload = () => script.remove();
+ try {
+  const state = await chrome.runtime.sendMessage({action: 'getStatus'});
+  if (!state?.enabled) return;
+  let active = 0;
+  window.addEventListener('message', async event => {
+   if (event.source !== window || event.origin !== 'https://www.twitch.tv') return;
+   const msg = event.data;
+   if (!msg || msg.source !== 'twitch-2k-request' || typeof msg.id !== 'string' || msg.id.length > 100 || active >= 8) return;
+   active++;
+   try {
+    const result = await chrome.runtime.sendMessage({action: 'relay', payload: msg.payload});
+    window.postMessage({source: 'twitch-2k-response', id: msg.id, result}, 'https://www.twitch.tv');
+   } catch {
+    window.postMessage({source: 'twitch-2k-response', id: msg.id, result: {ok: false}}, 'https://www.twitch.tv');
+   } finally { active--; }
+  });
+  const script = document.createElement('script');
+  script.src = chrome.runtime.getURL('page.js');
+  script.onload = () => script.remove();
+  (document.head || document.documentElement).appendChild(script);
+ } catch { console.warn('[Twitch 2K] Extension settings unavailable.'); }
 })();

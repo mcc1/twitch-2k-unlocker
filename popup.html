@@ -1,52 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=340" />
-  <title>Twitch 2K Unlocker</title>
-  <link rel="stylesheet" href="popup.css" />
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Twitch 2K Private Relay</title>
+ <link rel="stylesheet" href="popup.css" />
 </head>
-
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="icons/icon48.png" alt="Icon" class="logo" />
-      <h1>Twitch 2K</h1>
-    </div>
-
-    <div class="status-bar">
-      <span id="status" class="status inactive">Disabled</span>
-    </div>
-
-    <div class="control-group">
-      <div class="toggle-row">
-        <label for="toggle">Enable bypass</label>
-        <label class="switch">
-          <input type="checkbox" id="toggle" />
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <label for="proxy-url" class="input-label">Worker URL</label>
-      <input type="url" id="proxy-url" placeholder="https://your-worker.workers.dev" spellcheck="false" />
-      <p class="hint">
-        Deploy <a href="#" id="setup-link">worker.js</a>
-        to Cloudflare Workers (free) and paste the URL here.
-      </p>
-    </div>
-
-    <div class="info-card">
-      <p>
-        Routes only the playlist metadata (~2 KB) through
-        your Cloudflare Worker. Video streams stay direct.
-      </p>
-    </div>
+ <main class="container">
+  <div class="header"><img src="icons/icon48.png" alt="" class="logo" /><h1>Twitch 2K Private Relay</h1></div>
+  <div class="status-bar" role="status" aria-live="polite"><span id="status" class="status inactive">載入中</span></div>
+  <label><input type="checkbox" id="toggle" /> 啟用 metadata relay</label>
+  <div class="control-group">
+   <label for="proxy-url" class="input-label">Worker URL</label>
+   <input type="url" id="proxy-url" placeholder="https://your-worker.workers.dev" spellcheck="false" aria-describedby="proxy-help" />
+   <p id="proxy-help" class="hint">只填自己部署或信任的 Worker. 儲存時僅要求該網域的存取權限.</p>
   </div>
-
-  <script src="popup.js"></script>
+  <div class="control-group">
+   <label for="relay-key" class="input-label">Relay key</label>
+   <input type="password" id="relay-key" autocomplete="off" spellcheck="false" aria-describedby="key-help" />
+   <p id="key-help" class="hint">與 Worker 的 RELAY_SECRET 相同. 保存在此擴充套件的本機儲存區, 不傳給 Twitch 網頁.</p>
+  </div>
+  <label><input type="checkbox" id="forward-auth" /> 允許將 Twitch 帳號憑證送到 relay</label>
+  <p class="hint">預設關閉. 只有訂閱限定等內容確實需要時才開啟, relay 經營者能讀到憑證.</p>
+  <button id="save" type="button">儲存設定</button>
+  <p class="hint"><a href="#" id="setup-link">部署說明</a>. 僅代理播放 metadata, 影片流量保持直連. 1440p 仍取決於直播、Twitch 和出口地區.</p>
+ </main>
+ <script src="popup.js"></script>
 </body>
-
 </html>
