@@ -32,7 +32,7 @@
 
 ## 限制與待驗證
 
-- **不保證 1440p**. 主播、Twitch 授權和實際出口位置都會影響結果. Cloudflare 預設靠近進入請求的位置執行, Smart Placement 也不等於美國出口.
+- **不保證 1440p**. 主播、Twitch 授權和實際出口位置都會影響結果. 本 repo 已設定 placement.region = "aws:us-east-1", 讓 Cloudflare 選擇對美國東部區域延遲最低的機房. 這不固定某台主機, 也不保證 Twitch 對出口 IP 的國家判定; 部署後請查看 placement 日誌驗收.
 - 只攔截頁面主執行緒的 window.fetch. Twitch Web Worker 或其他播放器路徑不一定經過這個攔截器.
 - 僅支援 PlaybackAccessToken 和 PlaybackAccessToken_Template, 最多 4 筆純播放 token batch. 混合其他 operation 的 batch 直接使用原始 Twitch 請求.
 - Relay 失敗或回傳 GraphQL errors 時回退到原始直連, 可能失去高畫質選項. 設定頁的已啟用不代表已驗證解鎖.
