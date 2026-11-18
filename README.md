@@ -32,7 +32,7 @@
 
 ## 限制與待驗證
 
-- **不保證 1440p**. 主播、Twitch 授權和實際出口位置都會影響結果. 本 repo 已設定 placement.region = "aws:us-east-1", 讓 Cloudflare 選擇對美國東部區域延遲最低的機房. 這不固定某台主機, 也不保證 Twitch 對出口 IP 的國家判定; 部署後請查看 placement 日誌驗收.
+- **不保證 1440p**. 主播、Twitch 授權和實際出口位置都會影響結果. 本 repo 已設定 placement.region = "aws:ap-northeast-1", 讓 Cloudflare 選擇對日本東京區域延遲最低的機房. 這不固定某台主機, 也不保證 Twitch 對出口 IP 的國家判定; 部署後請查看 placement 日誌驗收.
 - 只攔截頁面主執行緒的 window.fetch. Twitch Web Worker 或其他播放器路徑不一定經過這個攔截器.
 - 僅支援 PlaybackAccessToken 和 PlaybackAccessToken_Template, 最多 4 筆純播放 token batch. 混合其他 operation 的 batch 直接使用原始 Twitch 請求.
 - Relay 失敗或回傳 GraphQL errors 時回退到原始直連, 可能失去高畫質選項. 設定頁的已啟用不代表已驗證解鎖.
@@ -44,6 +44,8 @@
 ## Verification
 
 ### 查看機房位置
+
+wrangler.toml 已明確設定 observability.enabled = true 和 head_sampling_rate = 1, 部署時啟用 Workers Logs 並記錄所有請求的日誌, 受 Cloudflare 平台限制和帳號配額約束. 此設定不維持 Live 即時連線, 日誌用量依帳號方案計算.
 
 在 Cloudflare 開啟此 Worker 的即時日誌, 再重新整理 Twitch 或開啟 Worker URL 產生請求.
 尋找 `[Twitch relay location]`, 其中 ingressColo 是請求進入的機房代碼;

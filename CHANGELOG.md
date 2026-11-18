@@ -2,6 +2,8 @@
 
 ## Worker diagnostics (2026-11-19)
 
+- 明確啟用 observability 並設定完整取樣, 將 Workers Logs 開關納入 Git 管理, 避免只在控制台設定而與自動部署設定不一致.
+- 將 placement.region 從 aws:us-east-1 改為 aws:ap-northeast-1, 改用日本東京區域作為執行位置提示.
 - 將 Wrangler Worker 名稱統一為 twitch-2k-unlocker, 與 Cloudflare 已連接的自動部署專案一致.
 - 指定 placement.region 為 aws:us-east-1, 讓 Cloudflare 選擇靠近美國東部區域的執行機房. 不保證 Twitch 對出口 IP 的國家判定.
 - 每次呼叫記錄 ingressColo 和 cf-placement, 用於查看入口機房與 Placement 路由位置. 不記錄請求網址、內容或憑證.
