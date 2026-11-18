@@ -1,5 +1,9 @@
 # Changelog
 
+## Worker diagnostics (2026-11-19)
+
+- 每次呼叫記錄 ingressColo 和 cf-placement, 用於查看入口機房與 Placement 路由位置. 不記錄請求網址、內容或憑證.
+
 ## 2.1.0
 
 - 驗證 relay key、限制上游目的地、固定播放 token query、拒絕重新導向.

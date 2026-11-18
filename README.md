@@ -43,6 +43,14 @@
 
 ## Verification
 
+### 查看機房位置
+
+在 Cloudflare 開啟此 Worker 的即時日誌, 再重新整理 Twitch 或開啟 Worker URL 產生請求.
+尋找 `[Twitch relay location]`, 其中 ingressColo 是請求進入的機房代碼;
+placement 在啟用 Placement 時可能顯示例如 remote-LHR 的路由執行位置, 沒有該標頭時為 null.
+未授權或 GET 請求仍會留下位置日誌, 但不會因此取得代理權限.
+這些值不保證 Twitch 對出口 IP 的國家判定. 本機模擬環境的 ingressColo 可能為 null 或測試值.
+
 需要 Node.js 20 或更新版, 不需安裝相依套件:
 
 ```sh

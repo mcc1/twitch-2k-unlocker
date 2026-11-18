@@ -63,6 +63,11 @@ function json(value, status) {
 }
 export default {
  async fetch(request, env = {}) {
+  // Location diagnostics only. Never log request bodies, URLs or credentials.
+  console.info('[Twitch relay location]', {
+   ingressColo: request.cf?.colo ?? null,
+   placement: request.headers.get('cf-placement'),
+  });
   // No CORS grant: the extension background fetches with an explicit host permission.
   if (request.method !== 'POST') return new Response(null, {status: 405, headers: {...HEADERS, Allow: 'POST'}});
   if (typeof env.RELAY_SECRET !== 'string' || !/^[a-zA-Z0-9_-]{32,128}$/.test(env.RELAY_SECRET)) return json({error: 'Relay not configured'}, 503);
