@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Twitch 2K Quality Unlocker",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Private authenticated Twitch metadata relay. Video stays direct; 1440p availability is not guaranteed.",
   "permissions": [
     "storage"
@@ -15,22 +15,23 @@
   },
   "content_scripts": [
     {
+      "run_at": "document_start",
       "matches": [
         "https://www.twitch.tv/*"
       ],
+      "world": "ISOLATED",
       "js": [
         "content.js"
-      ],
-      "run_at": "document_start"
-    }
-  ],
-  "web_accessible_resources": [
+      ]
+    },
     {
-      "resources": [
-        "page.js"
-      ],
+      "run_at": "document_start",
       "matches": [
         "https://www.twitch.tv/*"
+      ],
+      "world": "MAIN",
+      "js": [
+        "page.js"
       ]
     }
   ],
@@ -49,7 +50,7 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "version_name": "2.1.0",
+  "version_name": "2.2.0",
   "optional_host_permissions": [
     "https://*/*"
   ]

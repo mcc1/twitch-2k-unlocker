@@ -33,7 +33,8 @@
 ## 限制與待驗證
 
 - **不保證 1440p**. 主播、Twitch 授權和實際出口位置都會影響結果. 本 repo 已設定 placement.region = "aws:ap-northeast-1", 讓 Cloudflare 選擇對日本東京區域延遲最低的機房. 這不固定某台主機, 也不保證 Twitch 對出口 IP 的國家判定; 部署後請查看 placement 日誌驗收.
-- 只攔截頁面主執行緒的 window.fetch. Twitch Web Worker 或其他播放器路徑不一定經過這個攔截器.
+- 在 document_start 的 MAIN world 安裝主頁 fetch 攔截, 並包裝 Twitch 同源的 classic blob Web Worker, 讓其中的播放 metadata 經背景 relay. 其他來源、module Worker、XHR 或其他播放器路徑仍不一定經過攔截器.
+- 支援 /api/channel/hls/ 和 /api/v2/channel/hls/ 的精確直播 playlist 路徑. 影片片段不代理. Blob loader 會先複製並作為獨立 script 載入, 保留 strict mode; 副本在載入、錯誤或 terminate 後釋放.
 - 僅支援 PlaybackAccessToken 和 PlaybackAccessToken_Template, 最多 4 筆純播放 token batch. 混合其他 operation 的 batch 直接使用原始 Twitch 請求.
 - Relay 失敗或回傳 GraphQL errors 時回退到原始直連, 可能失去高畫質選項. 設定頁的已啟用不代表已驗證解鎖.
 - Twitch 網頁本身可觸發允許範圍內的播放 metadata 請求, 但不能取得 relay key 或指定任意上游. 頁面 bridge 不是對 Twitch 頁面的身分驗證邊界.
@@ -49,7 +50,7 @@ wrangler.toml 已明確設定 observability.enabled = true 和 head_sampling_rat
 
 在 Cloudflare 開啟此 Worker 的即時日誌, 再重新整理 Twitch 或開啟 Worker URL 產生請求.
 尋找 `[Twitch relay location]`, 其中 ingressColo 是請求進入的機房代碼;
-placement 在啟用 Placement 時可能顯示例如 remote-LHR 的路由執行位置, 沒有該標頭時為 null.
+目前程式讀取傳入標頭的 placement 可能為 null 或在日誌中省略; 實際執行位置應查看 Worker HTTP 回應的 Cf-Placement 標頭. 已實測回應 remote-NRT 代表轉往東京執行.
 未授權或 GET 請求仍會留下位置日誌, 但不會因此取得代理權限.
 這些值不保證 Twitch 對出口 IP 的國家判定. 本機模擬環境的 ingressColo 可能為 null 或測試值.
 

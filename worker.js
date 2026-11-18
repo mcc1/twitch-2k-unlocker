@@ -34,7 +34,7 @@ export function usherUrl(value) {
  try { url = new URL(value); } catch { throw new RelayError(400, 'Invalid playlist URL'); }
  reject(url.protocol !== 'https:' || url.hostname !== 'usher.ttvnw.net' || url.port !== '' ||
   url.username !== '' || url.password !== '' || url.hash !== '' ||
-  !/^\/(?:api\/channel\/hls\/[a-zA-Z0-9_]{1,25}|vod\/[0-9]{1,20})\.m3u8$/.test(url.pathname), 'Invalid playlist URL');
+  !/^\/(?:api\/(?:v2\/)?channel\/hls\/[a-zA-Z0-9_]{1,25}|vod\/[0-9]{1,20})\.m3u8$/.test(url.pathname), 'Invalid playlist URL');
  return url.href;
 }
 export function tokenBody(body) {

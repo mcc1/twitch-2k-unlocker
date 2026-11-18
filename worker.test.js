@@ -14,6 +14,8 @@ test('malicious destinations are rejected', () => {
   'https://usher.ttvnw.net:444/api/channel/hls/example.m3u8', 'https://usher.ttvnw.net/other',
   'https://user:pass@usher.ttvnw.net/api/channel/hls/example.m3u8', playlist + '#fragment']) assert.throws(() => usherUrl(url));
  assert.equal(usherUrl(playlist), playlist);
+ assert.equal(usherUrl('https://usher.ttvnw.net/api/v2/channel/hls/example.m3u8'), 'https://usher.ttvnw.net/api/v2/channel/hls/example.m3u8');
+ assert.throws(() => usherUrl('https://usher.ttvnw.net/api/v2/channel/hls/example.m3u8/segment.ts'));
  assert.equal(usherUrl('https://usher.ttvnw.net/vod/123.m3u8'), 'https://usher.ttvnw.net/vod/123.m3u8');
 });
 test('arbitrary GraphQL cannot be forwarded by disguising operationName', () => {
