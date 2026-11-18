@@ -40,7 +40,7 @@
 - Twitch 網頁本身可觸發允許範圍內的播放 metadata 請求, 但不能取得 relay key 或指定任意上游. 頁面 bridge 不是對 Twitch 頁面的身分驗證邊界.
 - 本機儲存區不是加密保險庫. 能控制此瀏覽器設定檔的人仍可能取得 relay key.
 - Cloudflare 限流是各機房的近似限制, 不是全球每日配額或費用上限. 未授權請求也會進入 Worker, 不能保證不消耗呼叫配額. 部署前自行檢查帳號方案與費用.
-- 未在真實 Cloudflare 部署或 Twitch 播放驗證. 自動測試只驗證離線的程式行為.
+- 2.2.0 已在真實 Cloudflare 與 Edge 驗證一個登入直播: 自然 token/playlist relay 均回 200, 影片持續播放於 2560x1440. 匿名、VOD、訂閱限定及其他播放器仍未實測, 不代表所有直播都能解鎖. 詳見 DIAGNOSIS-playback-interception.md.
 
 ## Verification
 

@@ -6,7 +6,7 @@
 - 支援 Twitch 同源 classic blob Web Worker 的播放 metadata 攔截, 保留原始 loader 的 strict mode 與一般訊息, 影片片段保持直連.
 - 精確允許 /api/v2/channel/hls/ 路徑, 保留 HTTPS、hostname、路徑及 redirect 限制.
 - AbortSignal 取消時立即結束呼叫端等待. 已送出的背景 metadata 請求仍可能完成, 受原有逾時和大小限制約束.
-- 本機新版已在 Edge 載入驗證. 真實播放器自然產生 token relay 成功與 v2 playlist relay 嘗試; 線上舊 Worker 尚未支援 v2, 完整播放仍待新版部署驗收.
+- 已經 GitHub 自動部署並在 Edge 2.2.0 驗證: 真實 Twitch 啟播自然產生 token 和 v2 playlist POST, CF 均回 200, 影片持續播放於 2560x1440. 其他播放情境仍待驗收.
 
 ## Worker diagnostics (2026-11-19)
 

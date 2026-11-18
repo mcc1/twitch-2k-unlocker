@@ -1,5 +1,7 @@
 # Security review
 
+本文記錄 2.1.0 的初始審查. 2.2.0 的真實播放器修正與部署驗收見 DIAGNOSIS-playback-interception.md.
+
 日期: 2026-11-19. 狀態: ready for you to test.
 
 來源: ddaccu/twitch-2k-unlocker f98af75eb95ee07e9f37493d62b78a0616560e40.

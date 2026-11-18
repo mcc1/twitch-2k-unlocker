@@ -1,6 +1,6 @@
 # Playback interception diagnosis
 
-日期: 2026-11-19. 狀態: 已修改, 待新版 CF 部署後驗證完整播放.
+日期: 2026-11-19. 狀態: ready_for_user, 真實直播 relay 與 1440p 已驗證, 待使用者驗收.
 基準: ed013b0350abdc0d48fa4f7403c6c0260c890f1f.
 
 ## 使用者症狀
@@ -33,7 +33,17 @@
 - 原始 loader 作為獨立 script 載入, 保留 strict mode, 並處理載入完成、錯誤與 terminate 時的 blob 釋放.
 - 新增 v2 路徑、worker relay、strict mode、segment 直連、等待中取消及 Request body 讀取期間取消回歸案例. npm test 11/11 通過, Wrangler 4.164.0 dry-run 通過.
 - 已在使用者現有 Edge 重新載入本機擴充套件 2.2.0-dev, 保留設定. 真實 Twitch 頁面重新整理後自然產生 gql relay 成功, 並攔到 GET /api/v2/channel/hls/lice0424.m3u8 的 usher relay.
-- 當前線上 Worker 仍是 ed013b0 的舊路徑限制, usher relay 被拒絕並回退直連. 本次尚未 commit/push 或部署, 不宣稱完整 relay 播放已通過.
+- 部署前線上 Worker 仍是 ed013b0 的舊路徑限制, usher relay 被拒絕並回退直連. 該階段未宣稱完整 relay 播放已通過.
 - 暫時 DEBUG 訊息已移除. 真實播放的最終驗收需新版 Worker 上線後重跑, 並在 CF 中確認自然 POST 與播放結果.
 - 最後一版本機擴充套件重新載入並重整實際 Twitch 後, CF 即時畫面顯示 03:37:34 (Asia/Taipei) 的自然 POST 與位置日誌. 該輪未發送人工 postMessage.
 - 獨立 reviewer ROUND 3/3 重跑原始 Request 取消競態已通過, 未發現剩餘程式 blocking. 線上 v2 playlist 與實際 relay 播放仍 pending, 不將 GQL 成功混同為整條播放成功.
+
+## GitHub 自動部署後驗收
+
+- 修正 commit d265cc6fa5821c30454068dadd62b3751fc1c587 已推送 main. GitHub 的 Workers Builds check 已確認 success.
+- 生產 Worker version: bee2d30f-b1f9-48ae-9ae2-43f160d2b6c8. 本機 Edge 擴充套件重新載入為 2.2.0, 保留 enabled、relay URL、key 與帳號轉送設定.
+- 03:43:00.892 和 03:43:01.462 (Asia/Taipei) 的真實 Twitch 啟播自然 POST 在 CF 即時日誌可見, 展開各筆 invocation 均為 response.status = 200、outcome = ok. 該輪未人工發送 metadata 橋接訊息.
+- 影片持續播放至 currentTime 28.850096, paused = false, readyState = 4, videoWidth = 2560, videoHeight = 1440, video.error = null.
+- 日本東京 placement 設定保留在 Wrangler. 該輪 HTTP 回應未提供 Cf-Placement, 因此本輪未重新證明實際執行機房.
+- 本次只驗證該直播的現有登入播放. 匿名、VOD、訂閱限定、其他播放器與 module Worker 仍未實測. 不宣稱所有 Twitch 情境通過.
+- 診斷期間曾反覆建立 CDP 連線而造成多次允許提示; 使用者指出後已停止該方式, 改用既有 agent-browser 連線. 沒有調低瀏覽器安全設定.
