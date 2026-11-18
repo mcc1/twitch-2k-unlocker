@@ -2,6 +2,7 @@
 
 ## Worker diagnostics (2026-11-19)
 
+- 將 Wrangler Worker 名稱統一為 twitch-2k-unlocker, 與 Cloudflare 已連接的自動部署專案一致.
 - 指定 placement.region 為 aws:us-east-1, 讓 Cloudflare 選擇靠近美國東部區域的執行機房. 不保證 Twitch 對出口 IP 的國家判定.
 - 每次呼叫記錄 ingressColo 和 cf-placement, 用於查看入口機房與 Placement 路由位置. 不記錄請求網址、內容或憑證.
 

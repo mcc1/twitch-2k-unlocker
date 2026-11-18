@@ -1,4 +1,4 @@
-name = "twitch-relay"
+name = "twitch-2k-unlocker"
 main = "worker.js"
 compatibility_date = "2026-11-01"
 # Add RELAY_SECRET using: wrangler secret put RELAY_SECRET
